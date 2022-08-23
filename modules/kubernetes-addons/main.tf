@@ -276,6 +276,20 @@ module "kube_prometheus_stack" {
   addon_context = local.addon_context
 }
 
+module "portworx" {
+  count                 = var.enable_portworx ? 1 : 0
+  source                = "./portworx"
+  helm_config           = var.portworx_helm_config
+  manage_via_gitops     = var.argocd_manage_add_ons
+  addon_context         = local.addon_context
+  irsa_policies         = var.portworx_irsa_policies
+  set_sensitive_values  = var.portworx_set_sensitive_values
+  set_values            = var.portworx_set_values
+  aws_access_key_id     = var.portworx_aws_access_key_id
+  aws_secret_access_key = var.portworx_aws_secret_access_key
+  chart_values          = var.portworx_chart_values
+}
+
 module "prometheus" {
   count       = var.enable_prometheus ? 1 : 0
   source      = "./prometheus"
@@ -481,3 +495,4 @@ module "external_secrets" {
   helm_config   = var.external_secrets_helm_config
   addon_context = local.addon_context
 }
+
