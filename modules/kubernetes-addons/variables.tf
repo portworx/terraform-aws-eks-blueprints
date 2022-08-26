@@ -1016,18 +1016,6 @@ variable "portworx_helm_config" {
   default     = null
 }
 
-variable "portworx_aws_access_key_id" {
-  description = "AWS access key id to provide portworx required access"
-  type        = any
-  default     = null
-}
-
-variable "portworx_aws_secret_access_key" {
-  description = "AWS access secret key to provide portworx required access"
-  type        = any
-  default     = null
-}
-
 variable "portworx_chart_values" {
   description = "Custom values for portworx helm chart"
   type        = any
