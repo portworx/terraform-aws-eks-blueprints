@@ -291,6 +291,18 @@ module "kube_prometheus_stack" {
   addon_context = local.addon_context
 }
 
+module "portworx" {
+  count                 = var.enable_portworx ? 1 : 0
+  source                = "portworx/portworx-addon/eksblueprints"
+  version               = "0.0.1"
+  helm_config           = var.portworx_helm_config
+  manage_via_gitops     = var.argocd_manage_add_ons
+  addon_context         = local.addon_context
+  irsa_policies         = var.portworx_irsa_policies
+  set_sensitive_values  = var.portworx_set_sensitive_values
+  set_values            = var.portworx_set_values
+  chart_values          = var.portworx_chart_values
+}
 module "prometheus" {
   count       = var.enable_prometheus ? 1 : 0
   source      = "./prometheus"
@@ -503,6 +515,72 @@ module "kuberay_operator" {
   source        = "./kuberay-operator"
   helm_config   = var.kuberay_operator_helm_config
   addon_context = local.addon_context
+}
+
+module "external_secrets" {
+  count                                 = var.enable_external_secrets ? 1 : 0
+  source                                = "./external-secrets"
+  helm_config                           = var.external_secrets_helm_config
+  addon_context                         = local.addon_context
+  irsa_policies                         = var.external_secrets_irsa_policies
+  external_secrets_ssm_parameter_arns   = var.external_secrets_ssm_parameter_arns
+  external_secrets_secrets_manager_arns = var.external_secrets_secrets_manager_arns
+}
+
+module "promtail" {
+  count             = var.enable_promtail ? 1 : 0
+  source            = "./promtail"
+  helm_config       = var.promtail_helm_config
+  manage_via_gitops = var.argocd_manage_add_ons
+  addon_context     = local.addon_context
+}
+
+module "calico" {
+  count             = var.enable_calico ? 1 : 0
+  source            = "./calico"
+  helm_config       = var.calico_helm_config
+  manage_via_gitops = var.argocd_manage_add_ons
+  addon_context     = local.addon_context
+}
+
+module "kubecost" {
+  count             = var.enable_kubecost ? 1 : 0
+  source            = "./kubecost"
+  helm_config       = var.kubecost_helm_config
+  manage_via_gitops = var.argocd_manage_add_ons
+  addon_context     = local.addon_context
+}
+
+module "smb_csi_driver" {
+  count             = var.enable_smb_csi_driver ? 1 : 0
+  source            = "./smb-csi-driver"
+  helm_config       = var.smb_csi_driver_helm_config
+  manage_via_gitops = var.argocd_manage_add_ons
+  addon_context     = local.addon_context
+}
+
+module "chaos_mesh" {
+  count             = var.enable_chaos_mesh ? 1 : 0
+  source            = "./chaos-mesh"
+  helm_config       = var.chaos_mesh_helm_config
+  manage_via_gitops = var.argocd_manage_add_ons
+  addon_context     = local.addon_context
+}
+
+module "cilium" {
+  count             = var.enable_cilium ? 1 : 0
+  source            = "./cilium"
+  helm_config       = var.cilium_helm_config
+  manage_via_gitops = var.argocd_manage_add_ons
+  addon_context     = local.addon_context
+}
+
+module "gatekeeper" {
+  count             = var.enable_gatekeeper ? 1 : 0
+  source            = "./gatekeeper"
+  helm_config       = var.gatekeeper_helm_config
+  manage_via_gitops = var.argocd_manage_add_ons
+  addon_context     = local.addon_context
 }
 
 module "external_secrets" {
