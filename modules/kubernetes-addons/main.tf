@@ -279,7 +279,7 @@ module "kube_prometheus_stack" {
 module "portworx" {
   count                 = var.enable_portworx ? 1 : 0
   source                = "portworx/portworx-addon/eksblueprints"
-  version               = "0.0.2"
+  version               = "0.0.3"
   helm_config           = var.portworx_helm_config
   manage_via_gitops     = var.argocd_manage_add_ons
   addon_context         = local.addon_context
