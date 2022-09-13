@@ -3,10 +3,10 @@ provider "aws" {
 }
 
 locals {
-  name = "portworx-eks-credentials-pradyuman"
+  name         = "portworx-eks-credentials"
   cluster_name = coalesce(var.cluster_name, local.name)
   region       = "us-east-1"
-  
+
   vpc_cidr = "10.0.0.0/16"
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
 
@@ -93,12 +93,12 @@ module "eks_blueprints" {
 
   managed_node_groups = {
     eksblueprint_nodegroup_med_1 = {
-      node_group_name           = "eksblueprint_nodegroup_med_1"
-      instance_types            = ["t2.medium"]
-      min_size                  = 3
-      desired_size              = 3
-      max_size                  = 3
-      subnet_ids                = module.vpc.private_subnets
+      node_group_name = "eksblueprint_nodegroup_med_1"
+      instance_types  = ["t2.medium"]
+      min_size        = 3
+      desired_size    = 3
+      max_size        = 3
+      subnet_ids      = module.vpc.private_subnets
     }
   }
   tags = local.tags
@@ -107,8 +107,8 @@ module "eks_blueprints" {
 
 
 module "eks_blueprints_kubernetes_addons" {
- 
-  source = "github.com/aws-ia/terraform-aws-eks-blueprints//modules/kubernetes-addons"
+
+  source               = "github.com/aws-ia/terraform-aws-eks-blueprints//modules/kubernetes-addons"
   eks_cluster_id       = module.eks_blueprints.eks_cluster_id
   eks_cluster_endpoint = module.eks_blueprints.eks_cluster_endpoint
   eks_oidc_provider    = module.eks_blueprints.oidc_provider
@@ -116,12 +116,12 @@ module "eks_blueprints_kubernetes_addons" {
 
 
 
-  enable_portworx                     = true
-  portworx_chart_values               ={ 
-    awsAccessKeyId = var.aws_access_key_id
+  enable_portworx = true
+  portworx_chart_values = {
+    awsAccessKeyId     = var.aws_access_key_id
     awsSecretAccessKey = var.aws_secret_access_key
     # other custom values
   }
-  
+
   tags = local.tags
 }

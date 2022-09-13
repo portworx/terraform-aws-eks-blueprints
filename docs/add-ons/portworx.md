@@ -12,11 +12,11 @@ To get started look at these sample [blueprints](https://github.com/portworx/ter
 
 ## Requirements
 
-For the add-on to work, Portworx needs additional permission to AWS resources which can be provided in the following two ways. The different flows are also covered in [sample blueprints](https://github.com/portworx/terraform-eksblueprints-portworx-addon/tree/main/blueprint): 
+For the add-on to work, Portworx needs additional permission to AWS resources which can be provided in the following two ways. The different flows are also covered in [sample blueprints](https://github.com/portworx/terraform-eksblueprints-portworx-addon/tree/main/blueprint):
 
 ## Method 1: Custom IAM policy
 
-1. Add the below code block in your terraform script to create a policy with the required permissions. Make a note of the resource name for the policy you created: 
+1. Add the below code block in your terraform script to create a policy with the required permissions. Make a note of the resource name for the policy you created:
 
 ```
 resource "aws_iam_policy" "<policy-resource-name>" {
@@ -55,7 +55,7 @@ resource "aws_iam_policy" "<policy-resource-name>" {
 ```bash
 terraform apply -target="aws_iam_policy.<policy-resource-name>"
 ```
-3. Attach the newly created AWS policy ARN to the node groups in your cluster: 
+3. Attach the newly created AWS policy ARN to the node groups in your cluster:
 
 ```
  managed_node_groups = {
@@ -80,7 +80,7 @@ terraform apply -target="module.eks_blueprints"
 ## Method 2: AWS Security Credentials
 
 Create a User with the same policy and generate an AWS access key ID and AWS secret access key pair and share it with Portworx.
- 
+
 It is recommended to pass the above values to the terraform script from your environment variable and is demonstrated below:
 
 
@@ -95,11 +95,11 @@ export TF_VAR_aws_secret_access_key=<access-key-secret>
 
 ```
   enable_portworx                     = true
-  
-  portworx_chart_values ={ 
+
+  portworx_chart_values ={
     awsAccessKeyId = var.aws_access_key_id
     awsSecretAccessKey = var.aws_secret_access_key
-    
+
     # other custom values for Portworx configuration
 }
 
@@ -134,9 +134,9 @@ To customize Portworx installation, pass the configuration parameter as an objec
 
 ```
   enable_portworx         = true
-  portworx_chart_values   ={ 
+  portworx_chart_values   ={
     clusterName="testCluster"
     imageVersion="2.11.1"
-  } 
+  }
 }
 ```
