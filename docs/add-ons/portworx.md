@@ -12,7 +12,9 @@ To get started look at these sample [blueprints](https://github.com/aws-ia/terra
 
 ## Requirements
 
-For the add-on to work, Portworx needs additional permission to AWS resources which can be provided in the following way. For an example blueprint, click [here](https://github.com/portworx/terraform-eksblueprints-portworx-addon/tree/main/blueprint):
+For the add-on to work, Portworx needs additional permission to AWS resources which can be provided in the following way. For an example blueprint, click [here](https://github.com/aws-ia/terraform-aws-eks-blueprints/tree/main/examples/portworx). 
+
+Note: Portworx currently does not support obtaining these permissions with an IRSA. Its support will be added with future releases.
 
 ### Creating the required IAM policy resource
 
