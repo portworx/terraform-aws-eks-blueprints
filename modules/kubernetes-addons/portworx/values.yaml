@@ -1,28 +1,33 @@
 # Please uncomment and specify values for these options as per your requirements.
 
+# This is the marketplace subscribed product: PX-ENTERPRISE or PX-ENTERPRISE-DR
+awsProduct: ${awsProduct}                #This is the default.
+
+namespace: ${namespace}                 # Namespace where Portworx cluster will be deployed
+createNamespace: ${createNamespace}   # Set to true when you want the namespace passed above doesnt exits and is to be created by the terraform script. Installation fails if the namespace already exists and the variable is set to true.
+
 deployOperator: true                    # Deploy the Portworx operator
 deployCluster: true                     # Deploy the Portworx cluster
 
-imageVersion: ${imageVersion}               # Version of the PX Image.
-pxOperatorImageVersion: 1.9.0       # Version of the PX operator image.
+imageVersion: ${imageVersion}                     # Version of the PX Image.
+pxOperatorImageVersion: ${pxOperatorImageVersion} # Version of the PX operator image.
 
-openshiftInstall: ${useOpenshiftInstall}                 # Defaults to false for installing Portworx on Openshift .
-isTargetOSCoreOS: false                 # Is your target OS CoreOS? Defaults to false.
-pksInstall: false                       # installation on PKS (Pivotal Container Service)
-EKSInstall: true                        # installation on EKS.
-AKSInstall: false                      # installation on AKS
-etcdEndPoint:  ${etcdEndPoint}        # The ETCD endpoint. Should be in the format etcd:http://<your-etcd-endpoint>:2379. If there are multiple etcd endpoints they need to be ";" seperated.
-                                      # the default value is empty since it requires to be explicity set using either the --set option of -f values.yaml.
-clusterName: ${clusterName}             # This is the default. please change it to your cluster name.
+openshiftInstall: ${useOpenshiftInstall}           # Defaults to false for installing Portworx on Openshift .
+isTargetOSCoreOS: false                            # Is your target OS CoreOS? Defaults to false.
+pksInstall: false                                  # installation on PKS (Pivotal Container Service)
+EKSInstall: true                                   # installation on EKS.
+AKSInstall: false                                  # installation on AKS
+etcdEndPoint:  ${etcdEndPoint}                     # The ETCD endpoint. Should be in the format etcd:http://<your-etcd-endpoint>:2379. If there are multiple etcd endpoints they need to be ";" seperated.
+                                                   # the default value is empty since it requires to be explicity set using either the --set option of -f values.yaml.
+clusterName: ${clusterName}           # This is the default. please change it to your cluster name.
 usefileSystemDrive: false             # true/false Instructs PX to use an unmounted Drive even if it has a filesystem.
 usedrivesAndPartitions: false         # Defaults to false. Change to true and PX will use unmounted drives and partitions.
-drives: ${drives}                          # NOTE: This is a ";" seperated list of drives. For eg: "/dev/sda;/dev/sdb;/dev/sdc" or
-                                      # "type=gp2,size=200;type=gp3,size=500". Defaults to use -A switch.
+drives: ${drives}                     # NOTE: This is a ";" seperated list of drives. For eg: "/dev/sda;/dev/sdb;/dev/sdc" or
+                                      # "type=gp2+size=200;type=gp3+size=500". For each cloud drive specify its "type" and "size" by passing a "+" separated value for these fields. Defaults to use -A switch.
 journalDevice:
 maxStorageNodesPerZone: ${maxStorageNodesPerZone}  # The maximum number of storage nodes desired per zone, in case of cloud drive provisioning
 
-secretType: k8s                       # Defaults to k8s, but can be kvdb/k8s/aws-kms/vault/ibm-kp. It is autopopulated to ibm-kp
-                                      # if the environment is IKS.
+secretType: k8s                                    # Defaults to k8s, but can be kvdb/k8s/aws-kms/vault/ibm-kp. It is autopopulated to ibm-kp if the environment is IKS.
 
 dataInterface: ${dataInterface}                   # Name of the interface <ethX>
 managementInterface: none             # Name of the interface <ethX>
@@ -105,8 +110,8 @@ serviceAccount:
     name:
 
 aws:
-  marketplace:
-  eksServiceAccount: ${eksServiceAccount}
+  marketplace: false                        #Set to True if you want to use AWS Marketplace license with Portworx. Make sure you subscribe to the correct Portworx product lsiting from the markettplace and then perform installation
+  eksServiceAccount: ${eksServiceAccount}   # Name of the service account with Metering Permission used to send Billing data to AWS Marketplace. Default the service account is created automatically when aws.marketplace is set to true and correct value is passed to this parameter
   accessKeyId: ${awsAccessKeyId}
   secretAccessKey: ${awsSecretAccessKey}
 
